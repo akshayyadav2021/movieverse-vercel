@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 import { movieService } from '../services';
 import {
   Container,
@@ -24,11 +24,8 @@ const Home = () => {
   const [sortBy, setSortBy] = useState('createdAt');
   const [sortOrder, setSortOrder] = useState('desc');
 
-  useEffect(() => {
-    fetchMovies();
-  }, [page, sortBy, sortOrder]);
 
-  const fetchMovies = async () => {
+  const fetchMovies = useCallback(async () => {
     setLoading(true);
     try {
       const data = await movieService.getMovies(page, 12, '', sortBy, sortOrder);
@@ -39,7 +36,12 @@ const Home = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, sortBy, sortOrder]);
+
+
+   useEffect(() => {
+    fetchMovies();
+  }, [fetchMovies]);
 
   const handlePageChange = (event, value) => {
     setPage(value);

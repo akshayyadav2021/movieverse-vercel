@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { movieService } from '../services';
 import {
@@ -24,11 +24,8 @@ const MovieDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    fetchMovie();
-  }, [id]);
 
-  const fetchMovie = async () => {
+  const fetchMovie = useCallback(async () => {
     try {
       const data = await movieService.getMovie(id);
       setMovie(data);
@@ -37,7 +34,12 @@ const MovieDetails = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    fetchMovie();
+  }, [fetchMovie]);
+
 
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString('en-US', {

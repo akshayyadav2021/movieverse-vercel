@@ -10,8 +10,7 @@ import {
   Paper,
   Alert,
   Grid,
-  Chip,
-  IconButton
+  Chip
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
@@ -42,7 +41,8 @@ const AddEditMovie = () => {
     if (isEditMode) {
       fetchMovie();
     }
-  }, [id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, isEditMode]);
 
   const fetchMovie = async () => {
     try {
